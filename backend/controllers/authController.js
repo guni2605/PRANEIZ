@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 
 export const signup = async (req, res) => {
   const { name, email, password } = req.body;
+  email = email.trim();
   try {
     const userExists = await User.findOne({ email });
     if (userExists) return res.json({
@@ -24,17 +25,19 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
+  console.log(email)
   try {
     const user = await User.findOne({ email });
+    console.log(user)
     if (!user) return res.json({
       success:false,
       message: "Invalid credentials" });
-
+   console.log(user,password);
     const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) return res.json({ 
       success : false,
       message: "Invalid credentials" });
-
+    console.log("JWT_SECRET:", process.env.JWT_SECRET);
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
     return res.json({
       success:true,

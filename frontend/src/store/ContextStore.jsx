@@ -16,6 +16,7 @@ export const ContextProvider = (props) => {
   useEffect(() => {
     setIsLoggedIn(localStorage.getItem("token") ? true : false);
   }, []);
+
   const url = "https://praneiz-bcakend.onrender.com";
   const getItemList = async () => {
     try {
