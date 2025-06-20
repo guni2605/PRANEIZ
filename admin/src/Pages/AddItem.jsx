@@ -2,12 +2,15 @@ import React, { useState, useContext } from "react";
 import axios from "axios";
 import { assets } from "../assets/assets";
 import { ContextStore } from "../store/ContextStore";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const categories = ["Men", "Women", "Kids"];
 const types = ["topwear", "bottomwear", "footwear", "accessories"];
 const sizeOptions = ["XS", "S", "M", "L", "XL", "XXL"];
 
 const AddItem = () => {
+  const navigate = useNavigate();
   const { url } = useContext(ContextStore);
   const [product, setProduct] = useState({
     name: "",
@@ -63,13 +66,27 @@ const AddItem = () => {
 
     try {
       const response = await axios.post(backendUrl, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("atoken")}`,
+        },
       });
-      console.log(response.data);
-      alert("Product added successfully!");
+      if (response.data.success) toast.success("Product added successfully!");
+      setProduct({
+        name: "",
+        description: "",
+        price: "",
+        stock: "",
+        category: "",
+        type: "",
+        discount: "",
+        sizes: [],
+        images: [],
+      });
+      navigate("/list-item");
     } catch (error) {
       console.error("Error uploading:", error.response?.data || error.message);
-      alert("Error submitting form");
+      toast.error("Error submitting form");
     }
   };
 
@@ -77,9 +94,9 @@ const AddItem = () => {
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-10">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-2xl bg-white rounded-lg shadow-lg p-6 sm:p-8 space-y-6"
+        className="w-full max-w-2xl bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 space-y-6"
       >
-        <h2 className="text-2xl font-semibold text-center text-gray-800">
+        <h2 className="text-xl sm:text-2xl font-semibold text-center text-gray-800">
           Add New Product
         </h2>
 
@@ -154,109 +171,64 @@ const AddItem = () => {
 
         {/* Price / Stock / Discount */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div>
-            <label
-              htmlFor="price"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Price (₹)
-            </label>
-            <input
-              id="price"
-              type="number"
-              name="price"
-              value={product.price}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
-              required
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="stock"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Stock
-            </label>
-            <input
-              id="stock"
-              type="number"
-              name="stock"
-              value={product.stock}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
-              required
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="discount"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Discount (%)
-            </label>
-            <input
-              id="discount"
-              type="number"
-              name="discount"
-              value={product.discount}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
-              placeholder="e.g. 10"
-              min="0"
-              max="90"
-            />
-          </div>
+          {["price", "stock", "discount"].map((field) => (
+            <div key={field}>
+              <label
+                htmlFor={field}
+                className="block text-sm font-medium text-gray-700 mb-1 capitalize"
+              >
+                {field === "price"
+                  ? "Price (₹)"
+                  : field === "stock"
+                  ? "Stock"
+                  : "Discount (%)"}
+              </label>
+              <input
+                id={field}
+                type="number"
+                name={field}
+                value={product[field]}
+                onChange={handleChange}
+                className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                placeholder={field === "discount" ? "e.g. 10" : ""}
+                min="0"
+                max={field === "discount" ? "90" : undefined}
+                required={field !== "discount"}
+              />
+            </div>
+          ))}
         </div>
 
         {/* Category & Type */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label
-              htmlFor="category"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Category
-            </label>
-            <select
-              id="category"
-              name="category"
-              value={product.category}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
-              required
-            >
-              <option value="">Select Category</option>
-              {categories.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label
-              htmlFor="type"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Type
-            </label>
-            <select
-              id="type"
-              name="type"
-              value={product.type}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
-              required
-            >
-              <option value="">Select Type</option>
-              {types.map((type) => (
-                <option key={type} value={type}>
-                  {type}
-                </option>
-              ))}
-            </select>
-          </div>
+          {[
+            { name: "category", label: "Category", options: categories },
+            { name: "type", label: "Type", options: types },
+          ].map(({ name, label, options }) => (
+            <div key={name}>
+              <label
+                htmlFor={name}
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                {label}
+              </label>
+              <select
+                id={name}
+                name={name}
+                value={product[name]}
+                onChange={handleChange}
+                className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                required
+              >
+                <option value="">Select {label}</option>
+                {options.map((opt) => (
+                  <option key={opt} value={opt}>
+                    {opt}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ))}
         </div>
 
         {/* Sizes */}

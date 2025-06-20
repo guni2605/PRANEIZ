@@ -1,4 +1,4 @@
-import { orderModel } from "../models/orderModel.js";
+import { OrderModel } from "../models/orderModel.js";
 import { User } from "../models/User.js";
 
 export const addToCart = async(req , res)=>{
@@ -133,7 +133,7 @@ export const placeOrder = async(req,res)=>{
       payment: false
     };
    //console.log(orderDetails);
-   const newOrder =  await orderModel.create(orderDetails);
+   const newOrder =  await OrderModel.create(orderDetails);
    console.log(newOrder);
     // Here you can implement the logic to place the order
     // For example, you can create an order model and save the order details

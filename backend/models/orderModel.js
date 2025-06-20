@@ -1,30 +1,53 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
+
 const orderSchema = new mongoose.Schema({
-  userId :{
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  items: [
+    {
+      itemId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ItemModel", // use the actual model name for items
+        required: true,
+      },
+      quantity: {
+        type: Number,
+        required: true,
+      },
+      size: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
+  amount: {
+    type: Number,
+    required: true,
+  },
+  address: {
+    name: String,
+    phone: String,
+    address: String,
+    city: String,
+    state: String,
+    pincode: String,
+  },
+  status: {
     type: String,
-    required: true
+    default: "Processing",
   },
-  items:{
-    type:Array,
-    required:true
+  date: {
+    type: Date,
+    default: Date.now,
   },
-  amount:{
-    type: Number
+  payment: {
+    type: Boolean,
+    default: false,
   },
-  address:{
-    type:Object,
-    required:true
-  },
-  status:{
-    type:String,
-    default:"Proceessing"
-  },date:{
-    type:Date,
-    default:Date.now()
-  },payment:{
-    type:Boolean,
-    default : false
-  }
-})
-const orderModel = mongoose.model.order ||   mongoose.model("order",orderSchema)
-export {orderModel};
+},{timestamps:true});
+
+const OrderModel = mongoose.models.Order || mongoose.model("Order", orderSchema);
+export { OrderModel };
