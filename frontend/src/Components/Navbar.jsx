@@ -55,7 +55,7 @@ function Navbar() {
               )}
             </Link>
 
-            <Link to="/admin">
+            <Link to="https://praneizadmin.vercel.app/">
               <button className="border border-amber-400 text-black px-6 py-2 rounded-full text-sm font-semibold hover:bg-pink-600 hover:text-white transition-colors">
                 Admin Panel
               </button>
