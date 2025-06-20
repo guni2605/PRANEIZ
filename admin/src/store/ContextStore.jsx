@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createContext } from "react";
 export const ContextStore = createContext({});
 export const ContextStoreProvider = (props) => {
-  const url = "http://localhost:3000";
+  const url = "https://praneiz-bcakend.onrender.com";
   const [atoken, setaToken] = useState(
     localStorage.getItem("atoken") ? localStorage.getItem("atoken") : ""
   );
