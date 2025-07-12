@@ -13,7 +13,10 @@ const Orders = () => {
         {},
         { headers: { token: localStorage.getItem("token") } }
       );
-      setOrders(response.data.orders);
+      if (response.data.success) {
+        console.log(response.data.orders);
+        setOrders(response.data.orders);
+      }
     } catch (error) {
       console.error("Error fetching orders:", error);
     }
@@ -33,7 +36,7 @@ const Orders = () => {
         <h1 className="text-4xl font-extrabold text-gray-800 mb-10 text-center">
           🛍️ Your Orders
         </h1>
-        {console.log(orders)}
+        {/* {console.log(orders)} */}
         {orders.length === 0 ? (
           <div className="text-center text-gray-600 text-lg mt-20">
             No orders found. Start shopping!
