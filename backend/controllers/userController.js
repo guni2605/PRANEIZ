@@ -162,7 +162,7 @@ export const getOrders = async(req,res)=>{
     });
   }
   try {
-    const orders = await orderModel.find({userId});
+    const orders = await OrderModel.find({userId});
     if(!orders){
       return res.json({
         success:false,
