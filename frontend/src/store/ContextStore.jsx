@@ -17,8 +17,8 @@ export const ContextProvider = (props) => {
     setIsLoggedIn(localStorage.getItem("token") ? true : false);
   }, []);
 
-  const url = "https://praneiz-bcakend.onrender.com";
-  //const url = "http://localhost:3000";
+  //const url = "https://praneiz-bcakend.onrender.com";
+  const url = import.meta.env.VITE_BACKEND_URL;
   const getItemList = async () => {
     try {
       const response = await axios.get(`${url}/api/v2/list/items`);

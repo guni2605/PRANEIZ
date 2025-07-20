@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createContext } from "react";
 export const ContextStore = createContext({});
 export const ContextStoreProvider = (props) => {
-  const url = "https://praneiz-bcakend.onrender.com";
+  const url = import.meta.env.VITE_BACKEND_URL;
   const [atoken, setaToken] = useState(
     localStorage.getItem("atoken") ? localStorage.getItem("atoken") : ""
   );
