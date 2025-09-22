@@ -1,17 +1,18 @@
-import {v2 as cloudinary}  from 'cloudinary';
-import ItemModel from '../models/itemModel.js';
-import jwt from 'jsonwebtoken';
-import { OrderModel } from '../models/orderModel.js';
-export const addItem = async (req ,res)=>{
+import { v2 as cloudinary } from "cloudinary";
+import ItemModel from "../models/itemModel.js";
+import jwt from "jsonwebtoken";
+import { OrderModel } from "../models/orderModel.js";
+export const addItem = async (req, res) => {
   try {
-    const {name,price,description,stock,category,type,images,sizes} = req.body;
-   // console.log(req.body);
+    const { name, price, description, stock, category, type, images, sizes } =
+      req.body;
+    // console.log(req.body);
     const files = req.files;
     console.log(files);
     if (!name || !price || !description || !stock || !category || !type) {
       return res.status(400).json({ message: "All fields are required" });
     }
-   
+
     // cloudinary upload logic here
     const imagesUrls = [];
     for (const file of files) {
@@ -28,61 +29,64 @@ export const addItem = async (req ,res)=>{
       category,
       type,
       images: imagesUrls,
-      sizes
-    }
+      sizes,
+    };
     // Save the new item to the database
     const item = await ItemModel.create(newItem);
-    console.log(item)
+    console.log(item);
     res.json({
-      success:true,
+      success: true,
       message: "Item added successfully",
-      item
-    })
-    
+      item,
+    });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res.json({
-      success:false,
-      message:error.message
-    })
+      success: false,
+      message: error.message,
+    });
   }
-}
-export const getAllItems = async(req,res)=>{
+};
+export const getAllItems = async (req, res) => {
   try {
     const items = await ItemModel.find({});
     res.json({
       success: true,
-      items
+      items,
     });
   } catch (error) {
     console.log(error);
     res.json({
       success: false,
-      message: error.message
+      message: error.message,
     });
   }
-}
-export const adminLogin =async (req,res)=>{
-  const {email,password} = req.body;
-  if(email != process.env.ADMIN_EMAIL || password != process.env.ADMIN_PASSWORD){
+};
+export const adminLogin = async (req, res) => {
+  const { email, password } = req.body;
+  if (
+    email != process.env.ADMIN_EMAIL ||
+    password != process.env.ADMIN_PASSWORD
+  ) {
     return res.json({
-      success:false,
-      message:"You are not authorised admin !"
-    })
+      success: false,
+      message: "You are not authorised admin !",
+    });
   }
-  const atoken = jwt.sign({role:"admin",email},process.env.JWT_SECRET,{expiresIn:"1h"});
+  const atoken = jwt.sign({ role: "admin", email }, process.env.JWT_SECRET, {
+    expiresIn: "1h",
+  });
   return res.json({
-    success:true,
-    message:"Login successfully",
-    atoken
-  })
-}
+    success: true,
+    message: "Login successfully",
+    atoken,
+  });
+};
 export const getAllOrders = async (req, res) => {
   try {
     const orders = await OrderModel.find()
-  .populate("userId", "name email")
-  .populate("items.itemId", "name price images"); // gets populated item info
-
+      .populate("userId", "name email")
+      .populate("items.itemId", "name price images"); // gets populated item info
 
     res.json({ success: true, orders });
   } catch (error) {
@@ -101,7 +105,9 @@ export const getOrderById = async (req, res) => {
       .populate("items.itemId", "name price images");
 
     if (!order) {
-      return res.status(404).json({ success: false, message: "Order not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Order not found" });
     }
 
     res.json({ success: true, order });
@@ -120,10 +126,12 @@ export const updateOrderStatus = async (req, res) => {
       { new: true }
     )
       .populate("userId", "name email")
-      .populate("items.product", "name price image");
+      .populate("items.itemId", "name price image");
 
     if (!updatedOrder) {
-      return res.status(404).json({ success: false, message: "Order not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Order not found" });
     }
 
     res.json({ success: true, order: updatedOrder });
