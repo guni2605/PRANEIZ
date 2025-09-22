@@ -1,83 +1,81 @@
-###PRANEIZ
+# PRANEIZ
 
-A Clothing brand — fashion, redefined with timeless charm and effortless grace. This repository contains a multi-part full‑stack project for an e‑commerce clothing storefront (frontend, backend, and admin panel). A live frontend demo is available at: https://praneizfrontend.vercel.app
+A Clothing brand — fashion, redefined with timeless charm and effortless grace. This repository contains a multi-part full-stack project for an e-commerce clothing storefront (frontend, backend, and admin panel). A live frontend demo is available at: [https://praneizfrontend.vercel.app](https://praneizfrontend.vercel.app)
 
-##About
+---
 
-PRANEIZ is an e‑commerce project for a clothing brand. The repository is structured as a monorepo with separate folders for frontend, backend, and an admin panel.
+## 📖 About
 
-This README was generated to give a clear on‑boarding path for other developers and contributors.
+PRANEIZ is an e-commerce project for a clothing brand. The repository is structured as a monorepo with separate folders for `frontend`, `backend`, and an `admin` panel.
 
-##Live demo
+This README was generated to give a clear on-boarding path for other developers and contributors.
 
-Frontend live at: https://praneizfrontend.vercel.app
+---
 
-Tech stack
+## 🌐 Live Demo
 
-Frontend: React, modern JavaScript, componentized UI
+Frontend live at: [https://praneizfrontend.vercel.app](https://praneizfrontend.vercel.app)
 
-Backend: Node.js + Express (REST API)
+---
 
-DB: MongoDB (Mongoose)
+## ⚙️ Tech Stack
 
-Authentication: JWT based authentication
+- **Frontend:** React (CRA or Next.js), modern JavaScript, componentized UI
+- **Backend:** Node.js + Express (REST API)
+- **Database:** MongoDB (Mongoose)
+- **Authentication:** JWT-based authentication
+- **File / Images:** Cloudinary (for product images)
+- **Styling:** Tailwind CSS or CSS modules
+- **Deployment:** Vercel (frontend), Render (backend)
 
-File / images: Image upload (Cloudinary ) for product images
+---
 
-Styling: Tailwind CSS or regular CSS modules
+## 📂 Folder Structure
 
-Deployment: Vercel for frontend; Render for backend
-
-Folder structure (high level)
-
+```
 PRANEIZ/
-├─ admin/ # optional admin panel (frontend)
-├─ backend/ # Express API (controllers, routes, models)
-├─ frontend/ # Public storefront (React)
+├─ admin/          # Admin panel (frontend)
+├─ backend/        # Express API (controllers, routes, models)
+├─ frontend/       # Public storefront (React)
 └─ README.md
+```
 
-Inside each folder you'd normally find:
+**Inside each folder:**
 
-package.json — scripts & deps
+- `package.json` — scripts & dependencies
+- `src/` or `server.js` — entry point
+- `routes/`, `controllers/`, `models/` (backend)
+- `components/`, `pages/`, `styles/` (frontend)
 
-src/ or server.js — entry point
+---
 
-routes/, controllers/, models/ (backend)
+## ✨ Features
 
-components/, pages/, styles/ (frontend)
+- 🔐 User authentication (register / login)
+- 🛍️ Product catalog with images
+- 📄 Product detail pages
+- 🛠️ Admin panel for adding/updating products
+- 📤 Image upload support
+- 🌐 REST API consumed by frontend
+- 📱 Responsive UI
 
-Features (expected)
+---
 
-User authentication (register / login)
+## 📦 Prerequisites
 
-Product catalog with images
+- Node.js (v16+ recommended)
+- npm or yarn
+- MongoDB (Atlas or local)
+- (Optional) Cloudinary account
+- Git
 
-Product detail pages
+---
 
-Admin panel for adding/updating products
+## 🔑 Environment Variables
 
-Image upload support
+Create a `.env` file in the `backend/` folder (rename from `.env.example` if present). Example keys:
 
-REST API consumed by frontend
-
-Responsive UI
-
-Prerequisites
-
-Node.js (v16+ recommended)
-
-npm or yarn
-
-MongoDB (Atlas or local)
-
-(Optional) Cloudinary account
-
-Git
-
-Environment variables (example)
-
-Create a .env file in the backend/ folder (rename from .env.example if present). Typical keys used by this kind of project:
-
+```
 PORT=5000
 MONGO_URI=<your-mongodb-connection-string>
 JWT_SECRET=<a-strong-secret>
@@ -85,95 +83,105 @@ CLOUDINARY_CLOUD_NAME=<cloudinary-cloud-name>
 CLOUDINARY_API_KEY=<cloudinary-api-key>
 CLOUDINARY_API_SECRET=<cloudinary-api-secret>
 CLIENT_URL=http://localhost:3000
+```
 
-Replace or remove Cloudinary keys if your project uses a different storage method.
+> Replace/remove Cloudinary keys if you use a different storage method.
 
-Install & run (local development)
+---
 
-Clone the repo
+## 🚀 Install & Run (Local Development)
 
+### 1. Clone the repo
+
+```bash
 git clone https://github.com/guni2605/PRANEIZ.git
 cd PRANEIZ
+```
 
-Backend
+### 2. Backend
 
+```bash
 cd backend
 npm install
-
 # create .env using the keys above
+npm run dev   # or `npm start`
+```
 
-npm run dev # or `npm start` depending on package.json scripts
+### 3. Frontend
 
-Frontend
-
+```bash
 cd ../frontend
 npm install
-npm run dev # or `npm start` — opens on http://localhost:3000
+npm run dev   # or `npm start` → http://localhost:3000
+```
 
-Admin
+### 4. Admin
 
+```bash
 cd ../admin
 npm install
 npm run dev
+```
 
-Open the frontend in your browser and verify it talks to the backend. If backend runs on a different port, update CLIENT_URL and any API base URL in frontend config.
+> Open the frontend in your browser and verify it talks to the backend. Update `CLIENT_URL` and API base URL if backend runs on a different port.
 
-API — common routes (examples)
+---
 
-These are example routes based on typical MERN e‑commerce projects. Replace with the actual endpoints from your code.
+## 📡 API — Common Routes (Examples)
 
-Auth
+**Auth**
 
-POST /api/auth/register — register new user
+- `POST /api/auth/register` — register new user
+- `POST /api/auth/login` — login and receive JWT
 
-POST /api/auth/login — login and receive JWT
+**Users**
 
-Users
+- `GET /api/users/me` — get current user (protected)
+- `PUT /api/users/:id` — update user (protected)
 
-GET /api/users/me — get current user (protected)
+**Products**
 
-PUT /api/users/:id — update user (protected)
+- `GET /api/products` — list products
+- `GET /api/products/:id` — get product detail
+- `POST /api/products` — create product (admin)
+- `PUT /api/products/:id` — update product (admin)
+- `DELETE /api/products/:id` — delete product (admin)
 
-Products
+**Images**
 
-GET /api/products — list products
+- `POST /api/upload` — upload product images (returns image URL)
 
-GET /api/products/:id — get product detail
+---
 
-POST /api/products — create product (admin)
+## ☁️ Deployment
 
-PUT /api/products/:id — update product (admin)
+- **Frontend:** Vercel (connected to `frontend` folder). Set `NEXT_PUBLIC_API_URL` or similar env var to your backend URL.
+- **Backend:** Deploy Node/Express on Render / Railway / Heroku / DigitalOcean App Platform. Set env variables (`MONGO_URI`, `JWT_SECRET`, Cloudinary keys).
 
-DELETE /api/products/:id — delete product (admin)
+> Optionally, containerize with Docker and deploy anywhere.
 
-Images
+---
 
-POST /api/upload — upload product images (returns image URL)
+## 🤝 Contributing
 
-Deployment
+1. Fork the repo
+2. Create a feature branch: `git checkout -b feature/awesome-thing`
+3. Commit changes and push
+4. Open a Pull Request describing your changes
 
-Frontend: Vercel (connected to the frontend folder). Set NEXT_PUBLIC_API_URL or similar env var to your backend URL.
+Please include an overview of your changes and any setup steps for testing.
 
-Backend: Deploy Node/Express on Render / Railway / Heroku / DigitalOcean App Platform. Set environment variables (MONGO_URI, JWT_SECRET, Cloudinary keys).
+---
 
-If you prefer, you can also containerize using Docker and deploy to any provider that supports Docker images.
+## 🛠️ Troubleshooting & Notes
 
-Contributing
+- ❌ Frontend cannot reach backend → check CORS settings and API base URL.
+- 📸 Image uploads fail → confirm Cloudinary credentials.
 
-Fork the repo
+---
 
-Create a feature branch: git checkout -b feature/awesome-thing
+## 📬 Contact
 
-Commit changes and push
+Maintainer: [guni2605](https://github.com/guni2605)
 
-Open a Pull Request describing your changes
-
-Please include an overview of what you changed and any setup steps needed to test.
-
-Troubleshooting & notes
-
-If the frontend cannot reach the backend, check CORS settings and the API base URL.
-
-If image uploads fail, confirm Cloudinary credentials and that server can reach those services.
-
-Use npm run lint / npm test if lint/test scripts are provided.
+---
