@@ -2,8 +2,10 @@ import React, { useContext, useState } from "react";
 import axios from "axios";
 import { ContextStore } from "../store/ContextStore";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const { url } = useContext(ContextStore);
 
@@ -14,6 +16,8 @@ const Signup = () => {
       localStorage.setItem("token", response.data.token);
       if (response.data.success) {
         toast.success("Signup successful!");
+        setForm({ name: "", email: "", password: "" });
+        navigate("/login");
       } else {
         toast.error(response.data.message);
       }
